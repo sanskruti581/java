@@ -1,21 +1,20 @@
 import java.util.Scanner;
 
-interface Displayable {
-    void displayDetails();
+abstract class Displayable {
+    abstract void displayDetails();
 }
 
-class Person implements Displayable {
+class Person extends Displayable {
     String name;
     String mobileNo;
     static Scanner sc = new Scanner(System.in);
 
-    // Constructor
     Person() {
         System.out.print("Enter Name: ");
         this.name = sc.nextLine();
 
         System.out.print("Enter Mobile Number (10 digits): ");
-        this.mobileNo = sc.nextLine();
+        this.mobileNo = sc.nextLine().trim();
         while (!this.mobileNo.matches("\\d{10}")) {
             System.out.println("Invalid mobile number! Enter exactly 10 digits.");
             System.out.print("Enter Mobile Number: ");
@@ -23,7 +22,6 @@ class Person implements Displayable {
         }
     }
 
-    @Override
     public void displayDetails() {
         System.out.println("Name: " + this.name);
         System.out.println("Mobile: " + this.mobileNo);
@@ -32,48 +30,46 @@ class Person implements Displayable {
 
 class Doctor extends Person {
     int wardNo;
-    String dept;
+    protected String dept;
 
-    // Constructor
     Doctor() {
-        super(); // Call Person constructor
+        super();
+        this.wardNo = inputWardNumber();
+
         
+    }
+
+    private int inputWardNumber() {
         while (true) {
             System.out.print("Enter Ward Number (1-12): ");
             if (sc.hasNextInt()) {
-                this.wardNo = sc.nextInt();
-                sc.nextLine(); // Consume newline
-                if (this.wardNo >= 1 && this.wardNo <= 12) {
-                    break;
+                int ward = sc.nextInt();
+            
+                if (ward >= 1 && ward <= 12) {
+                    return ward;
                 }
             }
             System.out.println("Invalid ward! Only 12 wards available. Try again.");
-            sc.nextLine(); // Clear invalid input
+            sc.nextLine(); 
         }
-
-        System.out.print("Enter Department: ");
-        this.dept = sc.nextLine().toUpperCase();
     }
 
-    @Override
     public void displayDetails() {
         super.displayDetails();
         System.out.println("Ward No: " + this.wardNo);
-        System.out.println("Department: " + this.dept);
+        
     }
 }
 
 class Nurse extends Person {
     String nurseId;
 
-    // Constructor
     Nurse() {
-        super(); // Call Person constructor
+        super();
         System.out.print("Enter Nurse ID: ");
         this.nurseId = sc.nextLine();
     }
 
-    @Override
     public void displayDetails() {
         super.displayDetails();
         System.out.println("Nurse ID: " + this.nurseId);
@@ -81,47 +77,67 @@ class Nurse extends Person {
 }
 
 class Assistant extends Person {
-    String assistantId;
+   private final String assistantId;
 
-    // Constructor
     Assistant() {
-        super(); // Call Person constructor
+        super();
         System.out.print("Enter Assistant ID: ");
-        this.assistantId = sc.nextLine();
+        this.assistantId = sc.nextLine().trim();
     }
 
-    @Override
     public void displayDetails() {
         super.displayDetails();
-        System.out.println("Assistant ID: " + this.assistantId);
+        System.out.println("Assistant ID: " + assistantId);
     }
 }
 
-public class Assig2 {
+public class assig2 {
     public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
         while (true) {
-            System.out.println("Choose a role to enter details:");
+            System.out.println("\nChoose a role to enter details:");
             System.out.println("1. Doctor\n2. Nurse\n3. Assistant\n4. Exit");
-            int choice = Person.sc.nextInt();
-            Person.sc.nextLine(); // Consume newline
+            System.out.print("Enter your choice: ");
+
+            int choice = sc.nextInt();
+            sc.nextLine(); 
 
             switch (choice) {
                 case 1:
-                    Doctor doctor = new Doctor();
-                    doctor.displayDetails();
+                    System.out.println("ENTER NO OF DETAILS YOU WANT TO ENTER FOR DOCTOR");
+                    int n = sc.nextInt();
+                    
+                    for (int i = 0; i < n; i++) {
+                        Doctor doctor = new Doctor();
+                        doctor.displayDetails();
+                    }
                     break;
+
                 case 2:
-                    Nurse nurse = new Nurse();
-                    nurse.displayDetails();
+                    System.out.println("ENTER NO OF NURSE DETAILS YOU WANT TO ENTER");
+                    int n1 = sc.nextInt();
+      
+                    for (int i = 0; i < n1; i++) {
+                        Nurse nurse = new Nurse();
+                        nurse.displayDetails();
+                    }
                     break;
+
                 case 3:
-                    Assistant assistant = new Assistant();
-                    assistant.displayDetails();
+                    System.out.println("ENTER THE NO OF DETAILS YOU WANT TO ENTER FOR ASSISTANT");
+                    int n2 = sc.nextInt();
+                    sc.nextLine();
+                    for (int i = 0; i < n2; i++) {
+                        Assistant assistant = new Assistant();
+                        assistant.displayDetails();
+                    }
                     break;
+
                 case 4:
                     System.out.println("Exiting...");
                     Person.sc.close();
                     return;
+
                 default:
                     System.out.println("Invalid choice! Please enter a valid option.");
             }
