@@ -1,56 +1,90 @@
 import java.util.Scanner;
 
-
-interface Calculations {
-    int result(int a, int b);
+public interface CalculateArea {
+    double calculateArea();
+    double pi = 3.1416;
 }
 
-
-interface IsNegative {
-    void checkNegative(int no);
+public interface CalculatePerimeter {
+    double calculatePerimeter();
 }
 
-class Addition implements Calculations {
-    public int result(int x, int y) {
-        return x + y;
+public interface Displayable {
+    void toDisplay();
+}
+
+class Square implements CalculateArea, CalculatePerimeter, Displayable {
+    private int side;
+
+    Square(int side) {
+        this.side = side;
+    }
+
+    public double calculateArea() {
+        return side * side;
+    }
+
+    public double calculatePerimeter() {
+        return 4 * side;
+    }
+
+    public void toDisplay() {
+        System.out.println("SHOWING CALCULATIONS:");
+        System.out.println("PERIMETER IS: " + calculatePerimeter());
+        System.out.println("AREA IS: " + calculateArea());
     }
 }
 
+class Rectangle implements CalculateArea, CalculatePerimeter, Displayable {
+    private int length, width;
 
-class Subtraction implements Calculations {
-    public int result(int p, int q) {
-        return p - q;
+    Rectangle(int length, int width) {
+        this.length = length;
+        this.width = width;
+    }
+
+    public double calculateArea() {
+        return length * width;
+    }
+
+    public double calculatePerimeter() {
+        return 2 * (length + width);
+    }
+
+    public void toDisplay() {
+        System.out.println("SHOWING CALCULATIONS:");
+        System.out.println("PERIMETER IS: " + calculatePerimeter());
+        System.out.println("AREA IS: " + calculateArea());
     }
 }
 
-class Multiplication implements Calculations {
-    public int result(int r, int s) {
-        return r * s;
+class Circle implements CalculateArea, CalculatePerimeter, Displayable {
+    private double radius;
+
+    Circle(double radius) {
+        this.radius = radius;
     }
-}
 
+    public double calculateArea() {
+        return pi * radius * radius;
+    }
 
-class Division implements Calculations {
-    public int result(int w, int n) {
-        if (n == 0) {
-            System.out.println("Error: Division by zero is not allowed.");
-            return 0;
+    public double calculatePerimeter() {
+        return new Circumference().calculate();
+    }
+
+    class Circumference {
+        double calculate() {
+            return 2 * pi * radius;
         }
-        return w / n;
+    }
+
+    public void toDisplay() {
+        System.out.println("SHOWING CALCULATIONS:");
+        System.out.println("CIRCUMFERENCE IS: " + calculatePerimeter());
+        System.out.println("AREA IS: " + calculateArea());
     }
 }
-
-
-class CheckNP implements IsNegative {
-    public void checkNegative(intt no) {
-        if (no < 0) {
-            System.out.println("The number " + no + " is NEGATIVE.");
-        } else {
-            System.out.println("The number " + no + " is POSITIVE.");
-        }
-    }
-}
-
 
 public class Assig3 {
     public static void main(String args[]) {
@@ -58,71 +92,55 @@ public class Assig3 {
         int ch;
 
         do {
-            System.out.println("\nENTER YOUR CHOICE:");
-            System.out.println("1. Addition");
-            System.out.println("2. Subtraction");
-            System.out.println("3. Multiplication");
-            System.out.println("4. Division");
-            System.out.println("5. Check Negative Number");
-            System.out.println("0. Exit");
-            System.out.print("Enter your choice: ");
+            System.out.println("\nENTER 1 TO CALCULATE AREA AND PERIMETER FOR SQUARE");
+            System.out.println("ENTER 2 TO CALCULATE AREA AND PERIMETER FOR RECTANGLE");
+            System.out.println("ENTER 3 TO CALCULATE AREA AND CIRCUMFERENCE FOR CIRCLE");
+            System.out.println("ENTER 0 TO EXIT");
 
-            ch = sc.nextInt();
+            try {
+                ch = sc.nextInt();
 
-            switch (ch) {
-                case 1:
-                    Addition addObj = new Addition();
-                    System.out.print("Enter first number: ");
-                    int a = sc.nextInt();
-                    System.out.print("Enter second number: ");
-                    int b = sc.nextInt();
-                    System.out.println("Result: " + addObj.result(a, b));
-                    break;
+                switch (ch) {
+                    case 1:
+                        System.out.println("Enter the length of the side of the square:");
+                        int side = sc.nextInt();
+                        if (side <= 0) throw new Exception("Side length must be positive.");
+                        Square sqObj = new Square(side);
+                        sqObj.toDisplay();
+                        break;
 
-                case 2:
-                    Subtraction subObj = new Subtraction();
-                    System.out.print("Enter first number: ");
-                    int ac = sc.nextInt();
-                    System.out.print("Enter second number: ");
-                    int bc = sc.nextInt();
-                    System.out.println("Result: " + subObj.result(ac, bc));
-                    break;
+                    case 2:
+                        System.out.println("Enter the length and width of the rectangle:");
+                        int length = sc.nextInt();
+                        int width = sc.nextInt();
+                        if (length <= 0 || width <= 0) throw new Exception("Length and width must be positive.");
+                        Rectangle recObj = new Rectangle(length, width);
+                        recObj.toDisplay();
+                        break;
 
-                case 3:
-                    Multiplication mulObj = new Multiplication();
-                    System.out.print("Enter first number: ");
-                    int an = sc.nextInt();
-                    System.out.print("Enter second number: ");
-                    int bn = sc.nextInt();
-                    System.out.println("Result: " + mulObj.result(an, bn));
-                    break;
+                    case 3:
+                        System.out.println("Enter the radius of the circle:");
+                        double radius = sc.nextDouble();
+                        if (radius <= 0) throw new Exception("Radius must be positive.");
+                        Circle cObj = new Circle(radius);
+                        cObj.toDisplay();
+                        break;
 
-                case 4:
-                    Division divObj = new Division();
-                    System.out.print("Enter first number: ");
-                    int aq = sc.nextInt();
-                    System.out.print("Enter second number: ");
-                    int bq = sc.nextInt();
-                    System.out.println("Result: " + divObj.result(aq, bq));
-                    break;
+                    case 0:
+                        System.out.println("EXITING...");
+                        break;
 
-                case 5:
-                    CheckNP checkObj = new CheckNP();
-                    System.out.print("Enter a number to check: ");
-                    int a1 = sc.nextInt();
-                    checkObj.checkNegative(a1);
-                    break;
+                    default:
+                        System.out.println("INVALID INPUT! PLEASE TRY AGAIN.");
+                }
 
-                case 0:
-                    System.out.println("Exiting program...");
-                    break;
-
-                default:
-                    System.out.println("Invalid choice! Please enter a valid option.");
+            } catch (Exception e) {
+                System.out.println("ERROR: " + e.getMessage());
+                
             }
+
         } while (ch != 0);
 
-        sc.close();
+   
     }
 }
-
