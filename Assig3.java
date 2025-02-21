@@ -1,15 +1,15 @@
 import java.util.Scanner;
 
-public interface CalculateArea {
+interface CalculateArea {
     double calculateArea();
     double pi = 3.1416;
 }
 
-public interface CalculatePerimeter {
+interface CalculatePerimeter {
     double calculatePerimeter();
 }
 
-public interface Displayable {
+interface Displayable {
     void toDisplay();
 }
 
@@ -86,15 +86,41 @@ class Circle implements CalculateArea, CalculatePerimeter, Displayable {
     }
 }
 
+// New Parallelogram Class
+class Parallelogram implements CalculateArea, CalculatePerimeter, Displayable {
+    private int base, side, height;
+
+    Parallelogram(int base, int side, int height) {
+        this.base = base;
+        this.side = side;
+        this.height = height;
+    }
+
+    public double calculateArea() {
+        return base * height;
+    }
+
+    public double calculatePerimeter() {
+        return 2 * (base + side);
+    }
+
+    public void toDisplay() {
+        System.out.println("SHOWING CALCULATIONS:");
+        System.out.println("PERIMETER IS: " + calculatePerimeter());
+        System.out.println("AREA IS: " + calculateArea());
+    }
+}
+
 public class Assig3 {
     public static void main(String args[]) {
         Scanner sc = new Scanner(System.in);
-        int ch;
+        int ch = -1; // Initialize ch to a non-zero value
 
         do {
             System.out.println("\nENTER 1 TO CALCULATE AREA AND PERIMETER FOR SQUARE");
             System.out.println("ENTER 2 TO CALCULATE AREA AND PERIMETER FOR RECTANGLE");
             System.out.println("ENTER 3 TO CALCULATE AREA AND CIRCUMFERENCE FOR CIRCLE");
+            System.out.println("ENTER 4 TO CALCULATE AREA AND PERIMETER FOR PARALLELOGRAM");
             System.out.println("ENTER 0 TO EXIT");
 
             try {
@@ -126,6 +152,17 @@ public class Assig3 {
                         cObj.toDisplay();
                         break;
 
+                    case 4:
+                        System.out.println("Enter the base, side length, and height of the parallelogram:");
+                        int base = sc.nextInt();
+                        int sideLen = sc.nextInt();
+                        int height = sc.nextInt();
+                        if (base <= 0 || sideLen <= 0 || height <= 0) 
+                            throw new Exception("Base, side length, and height must be positive.");
+                        Parallelogram pObj = new Parallelogram(base, sideLen, height);
+                        pObj.toDisplay();
+                        break;
+
                     case 0:
                         System.out.println("EXITING...");
                         break;
@@ -136,11 +173,11 @@ public class Assig3 {
 
             } catch (Exception e) {
                 System.out.println("ERROR: " + e.getMessage());
-                
+                sc.nextLine(); // Clear buffer
             }
 
         } while (ch != 0);
 
-   
+        sc.close();
     }
 }
