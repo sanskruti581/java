@@ -9,10 +9,11 @@ public class BankSystem {
         do {
             System.out.println("\n1. Deposit");
             System.out.println("2. Withdraw");
-            System.out.println("3. Initialize Amount");
-            System.out.println("4. Check Balance");
-            System.out.println("5. Divide Balance");
-            System.out.println("6. Exit");
+            System.out.println("3. Check Balance");
+            System.out.println("4. Divide Balance");
+            System.out.println("5. Exit");
+            System.out.println("6. try catch by 0");
+             System.out.println("7.length of string");
             System.out.println("Enter your choice:");
 
             choice = sc.nextInt();
@@ -36,41 +37,45 @@ public class BankSystem {
                     }
                     break;
 
-                case 3:
-                    b.initAmount();
-                    break;
 
-                case 4:
+                case 3:
                     b.checkBalance();
                     break;
 
-                case 5:
-                    b.divideBalance();
+                case 4:
+                    b.divideBalance1();
                     break;
 
-                case 6:
+                case 5:
                     System.out.println("Exiting the system...");
                     break;
-
+                    
+                 case 6:
+                  b.divideBalance1();
+                  
+                  case 7:
+                  String s = null;
+                  
+                  try{
+                  System.out.println(s.length());
+                  }catch(NullPointerException e){
+                   System.out.println(e);
+                  }
+                  
+                  
                 default:
                     System.out.println("Invalid choice! Please enter a valid option.");
             }
 
-        } while (choice != 6);
+        } while (choice != 5);
 
-        sc.close();
+       
     }
 }
 
 class Bank {
     private int balance = 0;
 
-    public void initAmount() {
-        Scanner sc = new Scanner(System.in);
-        System.out.println("ENTER INITIAL AMOUNT:");
-        balance = sc.nextInt();
-        System.out.println("Initial amount set to: " + balance);
-    }
 
     public void withdraw() throws AmountWithdraw {
         Scanner sc = new Scanner(System.in);
@@ -102,17 +107,16 @@ class Bank {
         System.out.println("Current Balance: " + balance);
     }
 
-    public void divideBalance() {
+    
+    public void divideBalance1() {
         Scanner sc = new Scanner(System.in);
         System.out.println("ENTER NUMBER TO DIVIDE BALANCE:");
         int divisor = sc.nextInt();
 
-        try {
+      
             int result = balance / divisor;
             System.out.println("RESULT: " + result);
-        } catch (ArithmeticException e) {
-            System.out.println("ERROR: Cannot divide by zero!");
-        }
+      
     }
 }
 
